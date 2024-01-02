@@ -1,0 +1,120 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nadelog-backend-pv
+  namespace: nadelog
+  labels:
+    type: local
+    app: nadelog-backend
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/nadelog/"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nadelog-backend-pv-claim
+  namespace: nadelog
+  labels:
+    app: nadelog-backend
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nadelog-backend
+  namespace: nadelog
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: nadelog-backend
+  template:
+    metadata:
+      labels:
+        app: nadelog-backend
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - image: nadelog-backend
+          name: nadelog-backend
+          envFrom:
+            - configMapRef:
+                name: nadelog-backend-config
+          ports:
+            - containerPort: 6000
+          volumeMounts:
+            - mountPath: /data/
+              name: nadelog-backend-vol
+      volumes:
+        - name: nadelog-backend-vol
+          persistentVolumeClaim:
+            claimName: nadelog-backend-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nadelog-backend-service
+  namespace: nadelog
+  labels:
+    app: nadelog-backend
+spec:
+  selector:
+    app: nadelog-backend
+  ports:
+   - port: 6000
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nadelog-backend-cert
+  namespace: nadelog
+spec:
+  secretName: certificate-nadelog-backend
+  dnsNames:
+    - api.nadelog.brigadasos.xyz
+  issuerRef:
+    name: clusterissuer-le
+    kind: ClusterIssuer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nadelog-backend-ingress
+  namespace: nadelog
+  labels:
+    app: nadelog-backend
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/issuer: clusterissuer-le
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.nadelog.brigadasos.xyz
+      secretName: certificate-nadelog-backend
+  rules:
+    - host: api.nadelog.brigadasos.xyz
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nadelog-backend-service
+                port:
+                  number: 6000
