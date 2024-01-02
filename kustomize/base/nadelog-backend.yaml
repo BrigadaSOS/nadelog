@@ -85,7 +85,7 @@ metadata:
 spec:
   secretName: certificate-nadelog-backend
   dnsNames:
-    - api.log.brigadasos.xyz
+    - apilog.brigadasos.xyz
   issuerRef:
     name: clusterissuer-le
     kind: ClusterIssuer
@@ -105,10 +105,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - api.log.brigadasos.xyz
+        - apilog.brigadasos.xyz
       secretName: certificate-nadelog-backend
   rules:
-    - host: api.log.brigadasos.xyz
+    - host: apilog.brigadasos.xyz
       http:
         paths:
           - pathType: Prefix
