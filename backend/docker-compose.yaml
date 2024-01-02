@@ -1,0 +1,36 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: nadelog
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    volumes:
+      - nadelog-pgdata:/var/lib/postgresql/data
+    networks:
+      - nadelog
+    ports:
+      - 5432:5432
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_LISTEN_PORT: 80
+    volumes:
+      - nadelog-pgadmin:/var/lib/pgadmin
+    ports:
+      - 15400:80
+    networks:
+      - nadelog
+    depends_on:
+      - postgres
+
+networks:
+  nadelog:
+
+volumes:
+  nadelog-pgdata:
+  nadelog-pgadmin:
