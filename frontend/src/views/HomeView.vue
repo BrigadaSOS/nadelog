@@ -6,14 +6,11 @@ import Footer from '../components/Footer.vue'
 
 <template>
   <main>
-    aaa
     <NavBar />
-<!--    <div class="min-h-screen flex-col flex">-->
-<!--      <LandingPageShowcase />-->
-<!--    </div>-->
-<!--    <div class="mt-auto">-->
-<!--      <StickyBanner />-->
-<!--      <Footer />-->
-<!--    </div>-->
+    Work in progress
+    <div class="mt-auto">
+      <StickyBanner />
+      <Footer />
+    </div>
   </main>
 </template>

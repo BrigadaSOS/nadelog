@@ -7,6 +7,7 @@ import Auth from './auth/LoginSignUp.vue'
 // const store = userStore()
 // const isAuth = computed(() => store.isLoggedIn)
 import { useI18n } from 'vue-i18n'
+import {initFlowbite} from "flowbite";
 const { t } = useI18n()
 
 const email = ref('')
@@ -17,10 +18,11 @@ let latestVersion = ref('')
 onMounted(async () => {
   getLatestVersion()
   isLoading.value = true
+  // initialize components based on data attribute selectors
 })
 
 const getLatestVersion = () => {
-  const repository = 'BrigadaSOS-db'
+  const repository = 'nadelog'
   const apiUrl = `https://api.github.com/repos/BrigadaSOS/${repository}/releases/latest`
 
   fetch(apiUrl)
@@ -37,8 +39,9 @@ const redirectReload = () => {
   router.push({ path: '/' })
 }
 </script>
+
 <template>
-<!--  <Auth />-->
+  <Auth/>
   <header
       class="flex flex-wrap md:justify-start md:flex-nowrap z-50 w-full bg-white border-b border-gray-200 text-sm py-3 md:py-0 dark:bg-sred dark:border-gray-700"
   >
@@ -94,7 +97,7 @@ const redirectReload = () => {
             <LanguageSelector class="w-full mb-2 md:mb-0 md:w-auto" />
 
             <button
-                v-if="!isAuth"
+                v-if="true"
                 data-hs-overlay="#hs-vertically-centered-scrollable-loginsignup-modal"
                 class="dark:bg-sgray w-full md:w-auto outline-none dark:hover:bg-sgrayhover hs-dropdown-toggle py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-gray-200 dark:hover:text-white"
             >
@@ -138,15 +141,15 @@ const redirectReload = () => {
                     {{ t("navbar.buttons.seeProfile")}}
                   </router-link>
                 </div>
-<!--                <div class="py-2 first:pt-0 last:pb-0">-->
-<!--                  <a-->
-<!--                      @click="store.logout()"-->
-<!--                      class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-white dark:hover:bg-sgray2"-->
-<!--                      href="#"-->
-<!--                  >-->
-<!--                    {{ t("navbar.buttons.logout")}}-->
-<!--                  </a>-->
-<!--                </div>-->
+                <div class="py-2 first:pt-0 last:pb-0">
+                  <a
+                      @click="store.logout()"
+                      class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-white dark:hover:bg-sgray2"
+                      href="#"
+                  >
+                    {{ t("navbar.buttons.logout")}}
+                  </a>
+                </div>
               </div>
             </div>
           </div>
