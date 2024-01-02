@@ -4,6 +4,6 @@ resources:
 - nadelog-backend.yaml
 namespace: nadelog
 images:
-- name: nadelog
+- name: nadelog-backend
   newName: ghcr.io/brigadasos/nadelog
   newTag: v0.0.2-1
