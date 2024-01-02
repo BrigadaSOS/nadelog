@@ -8,4 +8,4 @@ namespace: nadelog
 images:
 - name: nadelog
   newName: ghcr.io/brigadasos/nadelog
-  newTag: v0.0.1
+  newTag: v0.0.2-1
