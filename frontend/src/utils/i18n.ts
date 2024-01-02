@@ -1,4 +1,8 @@
-function supportedLocalesInclude(locale) {
+function supportedLocalesInclude(locale?: string) {
+    if(locale === undefined) {
+        return false;
+    }
+
     return ['en', 'es'].includes(locale)
 }
 
