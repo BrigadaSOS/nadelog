@@ -105,10 +105,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - api.nadelog.brigadasos.xyz
+        - api.log.brigadasos.xyz
       secretName: certificate-nadelog-backend
   rules:
-    - host: api.nadelog.brigadasos.xyz
+    - host: api.log.brigadasos.xyz
       http:
         paths:
           - pathType: Prefix
