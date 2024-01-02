@@ -85,7 +85,7 @@ metadata:
 spec:
   secretName: certificate-nadelog-backend
   dnsNames:
-    - api.nadelog.brigadasos.xyz
+    - api.log.brigadasos.xyz
   issuerRef:
     name: clusterissuer-le
     kind: ClusterIssuer
